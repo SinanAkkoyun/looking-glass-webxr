@@ -16,10 +16,10 @@ export const moveCanvasToWindow = (enabled: boolean, onbeforeunload) => {
 	}
 	else {
 
-	// initialize the Looking Glass Controls, pass references to both Canvas elements
-	if (controls == null) {
-		controls = initLookingGlassControlGUI() as Node
-	}
+	// // initialize the Looking Glass Controls, pass references to both Canvas elements
+	// if (controls == null) {
+	// 	controls = initLookingGlassControlGUI() as Node
+	// }
 
 	cfg.lkgCanvas.style.position = "fixed"
 	cfg.lkgCanvas.style.bottom = "0"
@@ -28,7 +28,7 @@ export const moveCanvasToWindow = (enabled: boolean, onbeforeunload) => {
 	cfg.lkgCanvas.width = cfg.calibration.screenW.value
 	cfg.lkgCanvas.height = cfg.calibration.screenH.value
 
-	document.body.appendChild(controls)
+	// document.body.appendChild(controls)
 	const screenManagement = "getScreenDetails" in window
 	try {
 	} catch {

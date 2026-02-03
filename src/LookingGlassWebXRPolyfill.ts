@@ -60,7 +60,10 @@ export class LookingGlassWebXRPolyfill extends WebXRPolyfill {
 
 	/** If a "Enter VR" button exists, let's override it with our own copy */
 	private async overrideDefaultVRButton() {
-		this.vrButton = await waitForElement<HTMLButtonElement>("VRButton")
+    const vrButtonPromise = waitForElement<HTMLButtonElement>("VRButton")
+    const arButtonPromise = waitForElement<HTMLButtonElement>("ARButton")
+    // Wait for either the VRButton or ARButton
+		this.vrButton = await Promise.race([vrButtonPromise, arButtonPromise])
 
 		if (this.vrButton && this.device) {
 			this.device.addEventListener("@@webxr-polyfill/vr-present-start", () => {

@@ -164,6 +164,17 @@ export type ViewControlArgs = {
 	filterMode: number
 	/**gaussian sigma */
 	gaussianSigma: number
+
+	/**
+	 * @default 0.0
+	 * The perspective angle shift.
+	 */
+	tanAngleOffset: number
+	/**
+	 * @default 0.0
+	 * The perspective angle shift upwards.
+	 */
+	tanAngleUpOffset: number
 }
 
 type LookingGlassConfigEvent = "on-config-changed"
@@ -213,6 +224,8 @@ export class LookingGlassConfig extends EventTarget {
 		subpixelMode: 1.0,
 		filterMode: 1,
 		gaussianSigma: 0.01,
+		tanAngleOffset: 0.0,
+		tanAngleUpOffset: 0.0
 	}
 	LookingGlassDetected: any
 
@@ -429,6 +442,26 @@ export class LookingGlassConfig extends EventTarget {
 	set inlineView(v) {
 		this.updateViewControls({ inlineView: v })
 	}
+
+
+	/**
+	 * defines the position of the camera on the Y-axis
+	 */
+	get tanAngleOffset() {
+		return this._viewControls.tanAngleOffset
+	}
+
+	set tanAngleOffset(v) {
+		this.updateViewControls({ tanAngleOffset: v })
+	}
+	get tanAngleUpOffset() {
+		return this._viewControls.tanAngleUpOffset
+	}
+
+	set tanAngleUpOffset(v) {
+		this.updateViewControls({ tanAngleUpOffset: v })
+	}
+
 
 	get capturing() {
 		return this._viewControls.capturing

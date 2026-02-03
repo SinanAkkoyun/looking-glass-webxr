@@ -131,19 +131,26 @@ export default class LookingGlassXRDevice extends XRDevice {
   
       for (let i = 0; i < cfg.numViews; ++i) {
         const fractionAlongViewCone = (i + 0.5) / cfg.numViews - 0.5; // -0.5 < this < 0.5
-        const tanAngleToThisCamera = Math.tan(cfg.viewCone * fractionAlongViewCone);
+        const tanAngleToThisCamera = Math.tan(cfg.viewCone * fractionAlongViewCone) + cfg.tanAngleOffset;
         const offsetAlongBaseline = focalDistance * tanAngleToThisCamera;
   
+        // Add vertical offset
+        const offsetAlongVertical = focalDistance * cfg.tanAngleUpOffset;
+
         const mView = (this.LookingGlassInverseViewMatrices[i] = this.LookingGlassInverseViewMatrices[i] || mat4.create());
-        mat4.translate(mView, mPose, [offsetAlongBaseline, 0, 0]);
+        mat4.translate(mView, mPose, [offsetAlongBaseline, offsetAlongVertical, 0]);
         mat4.invert(mView, mView);
   
         // depthNear/Far are the distances from the view origin to the near/far planes.
         // l/r/t/b/n/f are as in the usual OpenGL perspective matrix formulation.
         const n = Math.max(clipPlaneBias + renderState.depthNear, 0.01);
         const f = clipPlaneBias + renderState.depthFar;
+
         const halfYRange = n * tanHalfFovy;
-        const t = halfYRange, b = -halfYRange;
+        const midpointY = n * -cfg.tanAngleUpOffset;
+        const t = midpointY + halfYRange;
+        const b = midpointY - halfYRange;
+
         const midpointX = n * -tanAngleToThisCamera;
         const halfXRange = cfg.aspect * halfYRange;
         const r = midpointX + halfXRange, l = midpointX - halfXRange;

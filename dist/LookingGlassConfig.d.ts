@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 export declare const DefaultEyeHeight: number;
-declare type Value = {
+type Value = {
     value: number;
 };
-declare type SubpixelCell = {
+type SubpixelCell = {
     BOffsetX: number;
     BOffsetY: number;
     GOffsetX: number;
@@ -25,7 +25,7 @@ declare type SubpixelCell = {
     ROffsetX: number;
     ROffsetY: number;
 };
-export declare type CalibrationArgs = {
+export type CalibrationArgs = {
     configVersion: string;
     pitch: Value;
     slope: Value;
@@ -51,7 +51,7 @@ export declare enum InlineView {
     /** The quilt view */
     Quilt = 2
 }
-export declare type ViewControlArgs = {
+export type ViewControlArgs = {
     /**
      * @Deprecated: since 0.4.0 use `quiltResolution` instead
      * Defines the height of the individual quilt view, the width is then set based on the aspect ratio of the connected device.
@@ -157,8 +157,18 @@ export declare type ViewControlArgs = {
     filterMode: number;
     /**gaussian sigma */
     gaussianSigma: number;
+    /**
+     * @default 0.0
+     * The perspective angle shift.
+     */
+    tanAngleOffset: number;
+    /**
+     * @default 0.0
+     * The perspective angle shift upwards.
+     */
+    tanAngleUpOffset: number;
 };
-declare type LookingGlassConfigEvent = "on-config-changed";
+type LookingGlassConfigEvent = "on-config-changed";
 export declare class LookingGlassConfig extends EventTarget {
     private _calibration;
     private _viewControls;
@@ -234,6 +244,13 @@ export declare class LookingGlassConfig extends EventTarget {
      */
     get inlineView(): InlineView;
     set inlineView(v: InlineView);
+    /**
+     * defines the position of the camera on the Y-axis
+     */
+    get tanAngleOffset(): number;
+    set tanAngleOffset(v: number);
+    get tanAngleUpOffset(): number;
+    set tanAngleUpOffset(v: number);
     get capturing(): boolean;
     set capturing(v: boolean);
     get subpixelMode(): number;
